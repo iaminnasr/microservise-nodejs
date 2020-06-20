@@ -1,0 +1,21 @@
+# for more details in https://skaffold.dev/docs/references/yaml
+# in terminal and in the directory ** skaffold dev 
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/* 
+build: 
+  local:
+    push: false #dont push automate in docker hub again and again
+  artifacts: 	# 	the images you're going to be building.
+    - image: aminnasr/auth
+      context: auth #the directory of contain the Dockerfile 
+      docker:
+        dockerfile: Dockerfile
+      sync: #tell to skaffold how to handle any file change in side of here
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+
